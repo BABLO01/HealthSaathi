@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0fa9aa">
+  <meta name="description" content="Health Saathi — private offline health organizer for medicines, vitals, reminders, activity and health notes.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Health Saathi</title>
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to content</a>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="installBanner" class="install-banner hidden">
+    <div class="install-copy"><span class="install-icon">⇩</span><div><strong data-i18n="installTitle">Install Health Saathi</strong><small data-i18n="installText">Use it like an app, even when offline.</small></div></div>
+    <div class="install-actions"><button id="installBtn" class="primary small" data-i18n="install">Install</button><button id="dismissInstall" class="ghost small" aria-label="Close">×</button></div>
+  </div>
+
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div class="brand"><img src="icons/icon-72.png" alt="" class="brand-icon"><div><h1>Health Saathi</h1><span data-i18n="tagline">Your health, your way.</span></div></div>
+      <div class="top-actions">
+        <button id="languageToggle" class="lang-toggle" aria-label="Change language"><b>EN</b><span>اردو</span></button>
+        <button id="shareBtn" class="icon-btn" title="Share" aria-label="Share">↗</button>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section id="dashboard" class="view active" data-view="dashboard">
+        <div class="profile-strip card clickable" id="profileOpen">
+          <div id="profileAvatar" class="avatar">U</div>
+          <div class="profile-text"><small data-i18n="yourProfile">Your profile</small><strong id="profileNameDisplay" data-i18n="setupProfile">Set up your profile</strong></div>
+          <span class="chevron">›</span>
+        </div>
+
+        <section class="hero card">
+          <div><p id="greeting" class="eyebrow">Good morning</p><h2 data-i18n="careToday">Take care of your health today</h2><p data-i18n="heroText">A calm place for medicines, readings and daily habits.</p></div>
+          <div class="progress-ring"><span id="progressValue">0%</span><small id="progressCount">0/0</small></div>
+        </section>
+
+        <div class="section-heading"><h3 data-i18n="todayHealth">Today's health</h3><button class="text-btn" data-nav="vitals" data-i18n="view">View</button></div>
+        <div class="metric-grid four">
+          <button class="metric card" data-nav="medicines"><span>💊</span><div><strong data-i18n="medicines">Medicines</strong><b id="metricMedicines">0</b><small data-i18n="dueToday">due today</small></div></button>
+          <button class="metric card" data-nav="vitals"><span>♥️</span><div><strong data-i18n="bloodPressure">Blood pressure</strong><b id="metricBP">—</b><small>mmHg</small></div></button>
+          <button class="metric card" data-nav="vitals"><span>🩸</span><div><strong data-i18n="bloodSugar">Blood sugar</strong><b id="metricSugar">—</b><small>mg/dL</small></div></button>
+          <button class="metric card" data-nav="vitals"><span>⚖️</span><div><strong data-i18n="weight">Weight</strong><b id="metricWeight">—</b><small>kg</small></div></button>
+        </div>
+
+        <div class="section-heading"><h3 data-i18n="todaySummary">Today summary</h3></div>
+        <div class="metric-grid two">
+          <button class="metric card" data-nav="sleep"><span>😴</span><div><strong data-i18n="sleep">Sleep</strong><b id="metricSleep">—</b><small data-i18n="notAdded">Not added yet</small></div></button>
+          <button class="metric card" data-nav="activity"><span>🚶</span><div><strong data-i18n="activity">Activity</strong><b id="metricActivity">0 min</b><small data-i18n="today">Today</small></div></button>
+        </div>
+
+        <div class="section-heading"><h3 data-i18n="healthTip">Today's Health Tip</h3></div>
+        <article class="tip-card card"><div class="tip-icon">🌿</div><div><strong id="dailyTipTitle">Keep your medicine list updated</strong><p id="dailyTipText">A simple, current list can make doctor visits easier and safer.</p></div></article>
+
+        <div class="section-heading"><h3 data-i18n="quickAdd">Quick add</h3><button class="text-btn" data-nav="shortcuts" data-i18n="customize">Customize</button></div>
+        <div id="quickActions" class="quick-row"></div>
+
+        <div class="section-heading"><h3 data-i18n="favorites">Favorites</h3><button class="text-btn" data-nav="shortcuts" data-i18n="more">More</button></div>
+        <div id="favoritesGrid" class="favorite-grid"></div>
+
+        <div class="section-heading"><h3 data-i18n="howFeel">How I feel today</h3></div>
+        <div class="mood-grid">
+          <button class="mood card" data-mood="Good">🙂<span data-i18n="good">Good</span></button>
+          <button class="mood card" data-mood="Normal">😐<span data-i18n="normal">Normal</span></button>
+          <button class="mood card" data-mood="Not feeling well">😟<span data-i18n="notWell">Not feeling well</span></button>
+        </div>
+        <div class="install-inline hidden" id="installInline"><span>⇩</span><div><strong data-i18n="installTitle">Install Health Saathi</strong><small data-i18n="installText">Use it like an app, even when offline.</small></div><button id="installInlineBtn" class="primary small" data-i18n="install">Install</button></div>
+      </section>
+
+      <section id="medicines" class="view" data-view="medicines">
+        <div class="page-head"><div><p class="eyebrow" data-i18n="careTodayShort">Medicine reminders</p><h2 data-i18n="medicines">Medicines</h2></div><button class="primary" id="addMedicineBtn">＋ <span data-i18n="addMedicine">Add medicine</span></button></div>
+        <div id="medicineList" class="stack"></div>
+      </section>
+
+      <section id="vitals" class="view" data-view="vitals">
+        <div class="page-head"><div><p class="eyebrow" data-i18n="trackHealth">Track your readings</p><h2 data-i18n="vitals">Vitals</h2></div></div>
+        <div class="metric-grid three"><button class="action-card card" data-modal="bp"><span>♥️</span><strong data-i18n="bloodPressure">Blood pressure</strong><small>Add a reading or photo</small></button><button class="action-card card" data-modal="sugar"><span>🩸</span><strong data-i18n="bloodSugar">Blood sugar</strong><small>Add mg/dL</small></button><button class="action-card card" data-modal="weight"><span>⚖️</span><strong data-i18n="weight">Weight</strong><small>Add kg</small></button></div>
+        <div id="vitalsList" class="stack"></div>
+      </section>
+
+      <section id="timeline" class="view" data-view="timeline">
+        <div class="page-head"><div><p class="eyebrow" data-i18n="upcoming">Upcoming reminders</p><h2 data-i18n="timeline">Timeline</h2></div><button class="primary" id="addReminderBtn">＋ <span data-i18n="reminder">Reminder</span></button></div>
+        <div id="reminderList" class="stack"></div>
+      </section>
+
+      <section id="more" class="view" data-view="more">
+        <div class="page-head"><div><p class="eyebrow" data-i18n="everythingInOnePlace">Everything in one place</p><h2 data-i18n="more">More</h2></div></div>
+        <div class="menu-grid">
+          <button class="menu-item card" data-nav="activity">🏃<b data-i18n="activity">Exercise & activity</b><small>Daily movement guide</small></button>
+          <button class="menu-item card" data-nav="food">🥗<b data-i18n="food">Food & natural guidelines</b><small>Simple everyday choices</small></button>
+          <button class="menu-item card" data-nav="sleep">😴<b data-i18n="sleep">Sleep</b><small>Bedtime and wake reminders</small></button>
+          <button class="menu-item card" data-nav="notes">📝<b data-i18n="notes">Notes</b><small>Private health notes</small></button>
+          <button class="menu-item card" data-nav="reports">📊<b data-i18n="reports">Reports & insights</b><small>Monthly summaries</small></button>
+          <button class="menu-item card" data-nav="gallery">🖼️<b data-i18n="gallery">Health gallery</b><small>Photos stored locally</small></button>
+          <button class="menu-item card" data-nav="shortcuts">⭐<b data-i18n="shortcuts">Home shortcuts</b><small>Add or remove favorites</small></button>
+          <button class="menu-item card" data-nav="profile">👤<b data-i18n="profile">Profile</b><small>Your personal health details</small></button>
+          <button class="menu-item card" data-nav="settings">⚙️<b data-i18n="settings">Settings</b><small>Language, install, privacy</small></button>
+          <button class="menu-item card" data-nav="about">ⓘ<b data-i18n="about">About</b><small>How Health Saathi works</small></button>
+        </div>
+      </section>
+
+      <section id="activity" class="view" data-view="activity"><div class="page-head"><div><p class="eyebrow">20 simple ideas</p><h2 data-i18n="activity">Exercise & activity</h2></div></div><div id="exerciseList" class="guide-grid"></div></section>
+      <section id="food" class="view" data-view="food"><div class="page-head"><div><p class="eyebrow">Everyday choices</p><h2 data-i18n="food">Food & natural guidelines</h2></div></div><div id="foodList" class="guide-grid"></div></section>
+      <section id="sleep" class="view" data-view="sleep"><div class="page-head"><div><p class="eyebrow">Rest and routine</p><h2 data-i18n="sleep">Sleep</h2></div><button class="primary" id="addSleepBtn">＋ <span data-i18n="setReminder">Set reminder</span></button></div><div class="card info-card"><span>🌙</span><div><strong data-i18n="sleepTip">Keep a regular sleep and wake time.</strong><p data-i18n="sleepTipText">A reminder can help you keep a routine. It stays on this device.</p></div></div><div id="sleepList" class="stack"></div></section>
+      <section id="notes" class="view" data-view="notes"><div class="page-head"><div><p class="eyebrow">Private on-device notes</p><h2 data-i18n="notes">Notes</h2></div><button class="primary" id="addNoteBtn">＋ <span data-i18n="addNote">Add note</span></button></div><div id="notesList" class="stack"></div></section>
+      <section id="reports" class="view" data-view="reports"><div class="page-head"><div><p class="eyebrow">Your recent data</p><h2 data-i18n="reports">Reports & insights</h2></div></div><div id="reportContent"></div></section>
+      <section id="gallery" class="view" data-view="gallery"><div class="page-head"><div><p class="eyebrow">Stored on this device</p><h2 data-i18n="gallery">Health gallery</h2></div><button class="primary" id="addPhotoBtn">＋ <span data-i18n="addPhoto">Add photo</span></button></div><input id="galleryInput" type="file" accept="image/*" capture="environment" hidden><div id="galleryGrid" class="gallery-grid"></div></section>
+      <section id="shortcuts" class="view" data-view="shortcuts"><div class="page-head"><div><p class="eyebrow">Choose what appears on Home</p><h2 data-i18n="shortcuts">Home shortcuts</h2></div></div><div id="shortcutManager" class="shortcut-manager"></div></section>
+      <section id="profile" class="view" data-view="profile"><div class="page-head"><div><p class="eyebrow">Optional personal details</p><h2 data-i18n="profile">Profile</h2></div></div><div class="card form-card"><div class="profile-editor"><div id="largeAvatar" class="avatar large">U</div><div><input id="profilePhotoCamera" type="file" accept="image/*" capture="user" hidden><input id="profilePhotoGallery" type="file" accept="image/*" hidden><button class="secondary" id="profilePhotoCameraBtn">📷 <span data-i18n="takePhoto">Take photo</span></button><button class="secondary" id="profilePhotoGalleryBtn">🖼️ <span data-i18n="galleryPhoto">Choose from gallery</span></button><button class="ghost" id="removeProfilePhoto">× <span data-i18n="removePhoto">Remove photo</span></button></div></div><div class="form-grid"><label><span data-i18n="name">Name</span><input id="profileName" autocomplete="name"></label><label><span data-i18n="age">Age</span><input id="profileAge" type="number" min="1" max="120"></label><label><span data-i18n="bloodGroup">Blood group</span><select id="profileBlood"><option value="">—</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label><label><span data-i18n="height">Height (cm)</span><input id="profileHeight" type="number" min="30" max="250"></label></div><label><span data-i18n="healthNotes">Health notes (optional)</span><textarea id="profileNotes" rows="4"></textarea></label><button class="primary full" id="saveProfile" data-i18n="save">Save profile</button></div></section>
+      <section id="settings" class="view" data-view="settings"><div class="page-head"><div><p class="eyebrow">Control your app</p><h2 data-i18n="settings">Settings</h2></div></div><div class="settings-list"><div class="setting-row"><div><b data-i18n="language">Language</b><small>English / اردو</small></div><button id="settingsLang" class="secondary">EN / اردو</button></div><div class="setting-row"><div><b data-i18n="notifications">Notifications</b><small data-i18n="notificationText">Allow reminders while Health Saathi is open.</small></div><button id="notificationBtn" class="secondary" data-i18n="enable">Enable</button></div><div class="setting-row"><div><b data-i18n="installApp">Install app</b><small data-i18n="installSettingText">Install Health Saathi on this device.</small></div><button id="settingsInstall" class="secondary" data-i18n="install">Install</button></div><div class="setting-row"><div><b data-i18n="shareApp">Share app</b><small data-i18n="shareText">Share the Health Saathi link.</small></div><button id="settingsShare" class="secondary" data-i18n="share">Share</button></div><div class="setting-row danger"><div><b data-i18n="clearData">Clear all local data</b><small data-i18n="clearText">Removes profile, records, medicines and reminders from this device.</small></div><button id="clearDataBtn" class="danger-btn" data-i18n="clear">Clear</button></div></div><div class="settings-footer"><strong>Health Saathi</strong><span>MUHAMMAD USMAN CHANNA</span></div></section>
+      <section id="about" class="view" data-view="about"><div class="page-head"><div><p class="eyebrow">About</p><h2>Health Saathi</h2></div></div><div class="card about-card"><img src="icons/icon-180.png" alt="Health Saathi" class="about-logo"><h3>Health Saathi</h3><p data-i18n="aboutText">A simple health organizer for medicines, vital readings, reminders, activity, food guidance, notes and personal health information. Your entries are stored locally on this device.</p><div class="about-points"><span>✓ Offline-first</span><span>✓ Local data</span><span>✓ Urdu + English</span><span>✓ Installable PWA</span></div><hr><p class="developer">Developer<br><strong>MUHAMMAD USMAN CHANNA</strong></p></div></section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation"><button class="nav-item active" data-nav="dashboard">⌂<span data-i18n="dashboard">Dashboard</span></button><button class="nav-item" data-nav="medicines">💊<span data-i18n="medicines">Medicines</span></button><button class="nav-item" data-nav="vitals">♥️<span data-i18n="vitals">Vitals</span></button><button class="nav-item" data-nav="timeline">◷<span data-i18n="timeline">Timeline</span></button><button class="nav-item" data-nav="more">☰<span data-i18n="more">More</span></button></nav>
+  </div>
+
+  <dialog id="modal" class="modal"><div class="modal-card"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div id="modalContent"></div></div></dialog>
+  <script src="app.js" defer></script>
+</body>
+</html>
